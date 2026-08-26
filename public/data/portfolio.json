@@ -132,29 +132,7 @@
       "description": "Batching, queues, caching layers, and failure modes of model-serving endpoints."
     }
   ],
-  "blog": [
-    {
-      "id": "b1",
-      "title": "Evals are the product",
-      "meta": "Mar 2026",
-      "description": "Why a scrappy eval suite beats prompt tinkering, and how to build one in an afternoon.",
-      "url": "https://example.com/"
-    },
-    {
-      "id": "b2",
-      "title": "Forward-deployed engineering, as a student",
-      "meta": "Jan 2026",
-      "description": "Lessons from sitting with users while shipping an internal AI tool.",
-      "url": "https://example.com/"
-    },
-    {
-      "id": "b3",
-      "title": "Small models, big wins",
-      "meta": "Nov 2025",
-      "description": "When distillation and quantisation beat calling a frontier model on every request.",
-      "url": "https://example.com/"
-    }
-  ],
+  "blog": [],
   "about": [
     "I'm a final-year B.Tech Computer Science student specialising in Artificial Intelligence and Machine Learning. I work at the seam between research and production: turning models into products that people actually use.",
     "My focus areas are applied machine learning, data science, AI engineering and forward-deployed engineering — sitting close to users, shipping fast, and instrumenting everything. I care about evaluation, latency, and cost as much as accuracy.",
