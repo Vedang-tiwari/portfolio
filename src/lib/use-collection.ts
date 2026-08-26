@@ -35,11 +35,22 @@ export function useCollection(section: SectionKey) {
     fetchPortfolioData().then((remoteData) => {
       if (cancelled) return;
       if (remoteData && Array.isArray(remoteData[section])) {
-        setItems(remoteData[section]);
-        try {
-          window.localStorage.setItem(storageKey(section), JSON.stringify(remoteData[section]));
-        } catch {
-          /* ignore */
+        const key = storageKey(section);
+        const hasLocalStorage = typeof window !== "undefined" && window.localStorage.getItem(key) !== null;
+
+        if (!hasLocalStorage) {
+          // First time loading on this browser: initialize localStorage with server data
+          setItems(remoteData[section]);
+          try {
+            window.localStorage.setItem(key, JSON.stringify(remoteData[section]));
+          } catch {
+            /* ignore */
+          }
+        } else {
+          // Browser already has user state in localStorage.
+          // Keep localStorage as primary source so user edits/additions are preserved on refresh.
+          const currentLocal = readCollection(section);
+          setItems(currentLocal);
         }
       }
       setHydrated(true);
@@ -83,7 +94,20 @@ export function useCollection(section: SectionKey) {
     [items, persist],
   );
 
-  const reset = useCallback(() => persist(DEFAULT_ITEMS[section]), [persist, section]);
+  const reset = useCallback(async () => {
+    try {
+      window.localStorage.removeItem(storageKey(section));
+    } catch {
+      /* ignore */
+    }
+    const remoteData = await fetchPortfolioData();
+    const defaults =
+      remoteData && Array.isArray(remoteData[section])
+        ? remoteData[section]
+        : DEFAULT_ITEMS[section];
+
+    persist(defaults);
+  }, [persist, section]);
 
   return { items, hydrated, addItem, removeItem, reset };
 }

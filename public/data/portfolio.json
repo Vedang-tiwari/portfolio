@@ -1,11 +1,11 @@
 {
   "projects": [
     {
-      "title": "smart as fuck",
-      "meta": "asmuth",
-      "description": "galvanian species",
-      "url": "https://youtube.com",
-      "id": "msx3182r-pbzri"
+      "title": "Image caption generator",
+      "meta": "TensorFlow / Keras  ·  NLTK  ·  Scikit-learn  ·  NumPy  ·  Matplotlib  ·  Seaborn",
+      "description": "Image Captioning V1 is a complete, end-to-end Deep Learning and Computer Vision pipeline designed to automatically generate natural language descriptive captions for images. It combines pre-trained Convolutional Neural Networks (CNN) for visual feature extraction with Recurrent Neural Networks (LSTM) for sequence-based text decoding.\n\nThe project is trained on the popular Flickr8k dataset (~8,000 images, each annotated with 5 human captions) and provides a fully modular Python codebase for dataset processing, feature extraction, training, testing, inference, and BLEU metric evaluation.",
+      "url": "https://github.com/Vedang-tiwari/image-captioning/tree/f51749d919b210cfdb6ac0d0bbd46561687fcdc5/image-captioning",
+      "id": "mta7e2e9-5r5y2"
     },
     {
       "id": "p1",
