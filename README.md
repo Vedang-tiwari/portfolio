@@ -19,7 +19,7 @@ Home-page stats are inline placeholders in `src/routes/index.tsx`.
 
 Every section page has "Add <item>" and per-card "Delete", plus "Restore defaults".
 Edits persist per visitor in `localStorage` (`vt-portfolio:*`). No backend required.
-To make content global and admin-only, enable Lovable Cloud and move these
+To make content global and admin-only, enable Cloud and move these
 collections into a database table with an auth-gated write policy.
 
 ## Resume registration
