@@ -6,6 +6,7 @@ import {
   useRouter,
 } from "@tanstack/react-router";
 import { useEffect } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 import { reportError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "../components/SiteHeader";
@@ -90,8 +91,7 @@ function RootComponent() {
       </main>
       <SiteFooter />
       <CursorRing />
-
-      
+      <Analytics />
     </QueryClientProvider>
   );
 }
