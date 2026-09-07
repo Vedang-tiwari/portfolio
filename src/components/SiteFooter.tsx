@@ -1,7 +1,16 @@
 import { Link } from "@tanstack/react-router";
 import { PROFILE, SECTIONS, SECTION_ORDER, SOCIALS } from "@/lib/portfolio";
+import { useRegistration } from "@/lib/use-registration";
+import { useOwner } from "@/lib/use-owner";
 
 export function SiteFooter() {
+  const { registration } = useRegistration();
+  const { content } = useOwner();
+
+  const uploaded = content.cv;
+  const href = uploaded?.dataUrl ?? PROFILE.cvUrl;
+  const fileName = uploaded?.name ?? PROFILE.cvFileName;
+
   return (
     <footer className="mt-24 border-t border-border">
       <div className="rule-flame" />
@@ -48,14 +57,22 @@ export function SiteFooter() {
               </Link>
             </li>
             <li>
-
-              <a
-                href={PROFILE.cvUrl}
-                download={PROFILE.cvFileName}
-                className="text-sm text-muted-foreground hover:text-foreground"
-              >
-                Download CV
-              </a>
+              {registration ? (
+                <a
+                  href={href}
+                  download={fileName}
+                  className="text-sm text-muted-foreground hover:text-foreground"
+                >
+                  Download CV
+                </a>
+              ) : (
+                <Link
+                  to="/resume"
+                  className="text-sm text-muted-foreground hover:text-foreground"
+                >
+                  Register to unlock CV
+                </Link>
+              )}
             </li>
           </ul>
         </div>

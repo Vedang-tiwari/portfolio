@@ -104,20 +104,18 @@ export default async function handler(req, res) {
 }
 
 async function dispatchOwnerNotification(entry) {
-  const subject = `📄 CV Access Notification — ${entry.name}`;
+  const subject = `📄 CV Unlocked: ${entry.email} has viewed your CV`;
   const textBody = `Hello Vedang,
 
-Someone just registered to access and download your CV!
+This email address has registered to view and download your CV:
 
-Visitor Details:
-----------------
-• Name: ${entry.name}
-• Verified Email: ${entry.email}
+• Email Address: ${entry.email}
+• Full Name: ${entry.name}
 • Purpose / Interest: ${entry.purpose || "(None provided)"}
-• Time: ${new Date(entry.registeredAt).toLocaleString("en-US", { timeZone: "Asia/Kolkata" })}
+• Timestamp: ${new Date(entry.registeredAt).toLocaleString("en-US", { timeZone: "Asia/Kolkata" })} (IST)
 
-Best regards,
-Your Portfolio Notification System`;
+---
+This notification was automatically sent to ${OWNER_EMAIL} when the visitor unlocked your CV.`;
 
   // Standard Resend integration if RESEND_API_KEY is present
   const resendApiKey = process.env.RESEND_API_KEY;
@@ -141,11 +139,29 @@ Your Portfolio Notification System`;
         return;
       }
     } catch (e) {
-      console.error("[Resend Error]", e);
+      console.error("[Resend Email Error]", e);
     }
   }
 
-  // Fallback Dev Log Notification
+  // Webhook integration if NOTIFICATION_WEBHOOK_URL is present
+  const webhookUrl = process.env.NOTIFICATION_WEBHOOK_URL;
+  if (webhookUrl) {
+    try {
+      await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content: `📄 **CV View Alert**: Visitor \`${entry.email}\` (${entry.name}) registered to view your CV!`,
+          text: textBody,
+        }),
+      });
+      console.log(`[Notification Dispatched via Webhook]`);
+    } catch (e) {
+      console.error("[Webhook Error]", e);
+    }
+  }
+
+  // Dev & Fallback Log Notification
   console.log("\n=======================================================");
   console.log(`📧 [OWNER EMAIL NOTIFICATION DISPATCHED -> ${OWNER_EMAIL}]`);
   console.log(`Subject: ${subject}`);
