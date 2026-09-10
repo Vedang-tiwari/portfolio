@@ -47,10 +47,30 @@ export function DownloadButton({
     );
   }
 
+  const handleDownloadClick = () => {
+    if (registration) {
+      fetch("/api/register-cv", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "notify-download",
+          email: registration.email,
+          name: registration.name,
+        }),
+      }).catch(() => {});
+    }
+  };
+
   return (
-    <a href={href} download={fileName} className={`${base} ${solid}`}>
+    <a
+      href={href}
+      download={fileName}
+      onClick={handleDownloadClick}
+      className={`${base} ${solid}`}
+    >
       <Download className={icon} aria-hidden="true" />
       Download {LABELS[kind]}
     </a>
   );
 }
+

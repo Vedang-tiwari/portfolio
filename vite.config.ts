@@ -53,7 +53,7 @@ function portfolioDataPlugin(): Plugin {
         });
         return;
       }
-    } else if (req.url === "/api/register-cv" && req.method === "POST") {
+    } else if (req.url?.startsWith("/api/register-cv") && req.method === "POST") {
       let body = "";
       req.on("data", (chunk: any) => {
         body += chunk;
