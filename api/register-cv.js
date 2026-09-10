@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import nodemailer from "nodemailer";
 
 const REGISTRATIONS_PATH = path.resolve(process.cwd(), "data", "registrations.json");
 const OWNER_EMAIL = "vedangt027@gmail.com";
@@ -43,7 +44,7 @@ function validateEmail(email) {
   if (!local || !domain || !domain.includes(".")) return false;
   if (DISPOSABLE_DOMAINS.has(domain)) return false;
   if (/^(test|fake|asdf|qwerty|admin|user|abcd|1234|noone|none|xyz)$/i.test(local)) return false;
-  
+
   const domainParts = domain.split(".");
   const tld = domainParts[domainParts.length - 1];
   if (!tld || tld.length < 2) return false;
@@ -105,7 +106,7 @@ export default async function handler(req, res) {
 
       if (record.code !== inputOtp) {
         return res.status(400).json({
-          error: "Incorrect verification code. Please check your inbox and try again.",
+          error: "Incorrect verification code. Please check your email inbox and try again.",
         });
       }
 
@@ -121,7 +122,7 @@ export default async function handler(req, res) {
       // Clean up OTP record
       otpStore.delete(normalizedEmail);
 
-      // Save registration
+      // Save registration to disk
       saveRegistrationToDisk(registrationEntry);
 
       // Dispatch notification email to owner (vedangt027@gmail.com)
@@ -157,8 +158,8 @@ export default async function handler(req, res) {
     });
 
     // Dispatch OTP email to visitor
-    const visitorSubject = `Your CV Unlock Code: ${code}`;
-    const visitorBody = `Hello ${name.trim()},\n\nYour 6-digit email verification code to access and download Vedang Tiwari's CV is:\n\n👉  ${code}\n\nThis code will expire in 10 minutes.\nIf you did not request this, you can safely ignore this email.\n\nBest regards,\nVedang Tiwari`;
+    const visitorSubject = `Your CV Unlock Verification Code: ${code}`;
+    const visitorBody = `Hello ${name.trim()},\n\nYour 6-digit email verification code to access and download Vedang Tiwari's CV is:\n\n👉  ${code}\n\nThis code will expire in 10 minutes.\nIf you did not request this, please ignore this message.\n\nBest regards,\nVedang Tiwari`;
 
     const sent = await sendEmail({
       to: normalizedEmail,
@@ -166,11 +167,13 @@ export default async function handler(req, res) {
       text: visitorBody,
     });
 
+    if (!sent && !process.env.RESEND_API_KEY && !process.env.GMAIL_APP_PASSWORD && !process.env.SMTP_HOST) {
+      console.warn("[WARN] Email credentials not configured in environment variables.");
+    }
+
     return res.status(200).json({
       success: true,
       message: `Verification code sent to ${normalizedEmail}. Please check your email inbox.`,
-      // Provide preview code in dev/test mode if email service isn't active
-      devCode: process.env.NODE_ENV !== "production" || !process.env.RESEND_API_KEY ? code : undefined,
     });
   } catch (err) {
     console.error("[Register CV Error]", err);
@@ -203,19 +206,19 @@ function saveRegistrationToDisk(registrationEntry) {
 }
 
 async function dispatchOwnerNotification(entry) {
-  const subject = `📄 Real Visitor CV Unlock: ${entry.name} (${entry.email})`;
+  const subject = `📄 New Visitor CV Unlock Alert: ${entry.name} (${entry.email})`;
   const textBody = `Hello Vedang,
 
-A visitor has verified their email address and unlocked your CV!
+Great news! A visitor has verified their email address and unlocked access to your CV!
 
 • Full Name: ${entry.name}
 • Verified Email: ${entry.email}
 • Purpose / Interest: ${entry.purpose || "(None provided)"}
-• Verification Method: 6-Digit Email OTP
+• Verification Status: Verified via 6-Digit Email OTP
 • Timestamp: ${new Date(entry.registeredAt).toLocaleString("en-US", { timeZone: "Asia/Kolkata" })} (IST)
 
 ---
-This email notification was automatically sent to ${OWNER_EMAIL} after successful OTP email verification.`;
+This email notification was automatically sent to ${OWNER_EMAIL} when the visitor unlocked your CV.`;
 
   await sendEmail({
     to: OWNER_EMAIL,
@@ -225,14 +228,14 @@ This email notification was automatically sent to ${OWNER_EMAIL} after successfu
 }
 
 async function dispatchDownloadNotification({ email, name }) {
-  const subject = `📥 CV Downloaded by ${name} (${email})`;
+  const subject = `📥 CV File Download Alert: ${name} (${email})`;
   const textBody = `Hello Vedang,
 
-The verified visitor ${name} (${email}) has just clicked the download button for your CV PDF!
+The verified visitor ${name} (${email}) has just clicked the download button and downloaded your CV PDF!
 
 • Visitor Name: ${name}
 • Verified Email: ${email}
-• Time: ${new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })} (IST)
+• Timestamp: ${new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" })} (IST)
 
 ---
 Notification sent to ${OWNER_EMAIL}.`;
@@ -245,9 +248,42 @@ Notification sent to ${OWNER_EMAIL}.`;
 }
 
 async function sendEmail({ to, subject, text }) {
-  const resendApiKey = process.env.RESEND_API_KEY;
   let sent = false;
 
+  // Method 1: Gmail SMTP / Nodemailer (if GMAIL_USER & GMAIL_APP_PASSWORD or SMTP_HOST are set)
+  const gmailUser = process.env.GMAIL_USER || process.env.SMTP_USER;
+  const gmailPass = process.env.GMAIL_APP_PASSWORD || process.env.SMTP_PASS;
+  const smtpHost = process.env.SMTP_HOST || "smtp.gmail.com";
+  const smtpPort = Number(process.env.SMTP_PORT || 465);
+
+  if (gmailUser && gmailPass) {
+    try {
+      const transporter = nodemailer.createTransport({
+        host: smtpHost,
+        port: smtpPort,
+        secure: smtpPort === 465,
+        auth: {
+          user: gmailUser,
+          pass: gmailPass,
+        },
+      });
+
+      await transporter.sendMail({
+        from: `"Vedang Tiwari Portfolio" <${gmailUser}>`,
+        to: Array.isArray(to) ? to.join(",") : to,
+        subject,
+        text,
+      });
+
+      console.log(`[Email Sent via SMTP/Gmail to ${to}]`);
+      return true;
+    } catch (e) {
+      console.error("[Nodemailer SMTP Error]", e);
+    }
+  }
+
+  // Method 2: Resend API (if RESEND_API_KEY is set)
+  const resendApiKey = process.env.RESEND_API_KEY;
   if (resendApiKey) {
     try {
       const response = await fetch("https://api.resend.com/emails", {
@@ -275,6 +311,7 @@ async function sendEmail({ to, subject, text }) {
     }
   }
 
+  // Method 3: Webhook (if NOTIFICATION_WEBHOOK_URL is set)
   const webhookUrl = process.env.NOTIFICATION_WEBHOOK_URL;
   if (webhookUrl) {
     try {
@@ -296,11 +333,12 @@ async function sendEmail({ to, subject, text }) {
   }
 
   console.log("\n=======================================================");
-  console.log(`📧 [EMAIL DISPATCHED LOG] -> To: ${to}`);
+  console.log(`📧 [EMAIL DISPATCH LOG] -> To: ${to}`);
   console.log(`Subject: ${subject}`);
   console.log(`Body:\n${text}`);
   console.log("=======================================================\n");
 
   return sent;
 }
+
 

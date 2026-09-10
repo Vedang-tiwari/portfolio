@@ -35,7 +35,6 @@ function ResumePage() {
   
   const [error, setError] = useState("");
   const [info, setInfo] = useState("");
-  const [devCodeNotice, setDevCodeNotice] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   // Step 1: Submit details -> Request OTP code
@@ -43,7 +42,6 @@ function ResumePage() {
     e.preventDefault();
     setError("");
     setInfo("");
-    setDevCodeNotice(null);
 
     const name = formData.name.trim();
     const email = formData.email.trim();
@@ -83,9 +81,6 @@ function ResumePage() {
       }
 
       setInfo(data.message || `Verification code sent to ${email}. Check your email inbox!`);
-      if (data.devCode) {
-        setDevCodeNotice(data.devCode);
-      }
       setStep("otp");
     } catch {
       setError("Network error connecting to verification server. Please check your connection and try again.");
@@ -161,9 +156,6 @@ function ResumePage() {
         setError(data.error || "Could not resend verification code.");
       } else {
         setInfo(`A new 6-digit code was sent to ${formData.email}.`);
-        if (data.devCode) {
-          setDevCodeNotice(data.devCode);
-        }
       }
     } catch {
       setError("Could not reach verification server.");
@@ -282,12 +274,6 @@ function ResumePage() {
                 </div>
               </div>
             </div>
-
-            {devCodeNotice && (
-              <div className="rounded-sm border border-amber-500/40 bg-amber-500/10 p-3 text-xs font-mono text-amber-700 dark:text-amber-300">
-                ⚡ <strong>DEV/TEST NOTICE</strong>: Verification code is <strong>{devCodeNotice}</strong>
-              </div>
-            )}
 
             <label className="text-sm">
               <span className="font-semibold text-foreground">6-Digit Verification Code (OTP) *</span>
