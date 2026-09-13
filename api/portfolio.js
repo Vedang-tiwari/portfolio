@@ -54,6 +54,62 @@ export default async function handler(req, res) {
         console.warn("Could not write portfolio.json to disk (read-only filesystem):", writeErr);
       }
 
+      // --- GitHub API Integration for Vercel Persistence ---
+      if (process.env.GITHUB_TOKEN && process.env.GITHUB_REPO_OWNER && process.env.GITHUB_REPO_NAME) {
+        try {
+          const token = process.env.GITHUB_TOKEN;
+          const owner = process.env.GITHUB_REPO_OWNER;
+          const repo = process.env.GITHUB_REPO_NAME;
+          const branch = process.env.GITHUB_BRANCH || "main";
+          
+          const filesToUpdate = ["data/portfolio.json", "public/data/portfolio.json"];
+          
+          for (const filePath of filesToUpdate) {
+            // 1. Get current file SHA
+            const fileUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}?ref=${branch}`;
+            const getRes = await fetch(fileUrl, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "application/vnd.github.v3+json",
+              },
+            });
+
+            let sha;
+            if (getRes.ok) {
+              const fileData = await getRes.json();
+              sha = fileData.sha;
+            }
+
+            // 2. Commit new file content
+            const contentEncoded = Buffer.from(JSON.stringify(payload, null, 2)).toString("base64");
+            const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`, {
+              method: "PUT",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "application/vnd.github.v3+json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                message: `chore: update ${filePath} via owner section`,
+                content: contentEncoded,
+                sha: sha,
+                branch: branch,
+              }),
+            });
+
+            if (!putRes.ok) {
+              const errText = await putRes.text();
+              console.error(`[GitHub API] Failed to commit ${filePath}:`, errText);
+            } else {
+              console.log(`[GitHub API] Successfully committed ${filePath}`);
+            }
+          }
+        } catch (githubErr) {
+          console.error("[GitHub API] Error:", githubErr);
+        }
+      }
+      // ----------------------------------------------------
+
       return res.status(200).json({ success: true, data: payload });
     } catch (err) {
       return res.status(500).json({ error: "Failed to save portfolio data" });

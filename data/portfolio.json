@@ -27,6 +27,13 @@
       "meta": "Polars · Prefect · LightGBM",
       "description": "Feature store plus backtesting framework with walk-forward validation; beat the seasonal-naive baseline by 18% MAPE.",
       "url": "https://github.com/"
+    },
+    {
+      "id": "p4",
+      "title": "Multiplicative Attention",
+      "meta": "Python · PyTorch · TorchText · TQDM · SacreBLEU · TensorBoard",
+      "description": "Multiplicative attention (also called dot-product attention) is an attention mechanism that computes the alignment score between a query and a key using a simple dot product (or matrix multiplication).",
+      "url": "https://github.com/Vedang-tiwari/AI-Essentials"
     }
   ],
   "skills": [
