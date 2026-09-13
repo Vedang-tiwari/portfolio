@@ -36,12 +36,6 @@
       "description": "SQL, Polars/pandas, dbt, Airflow/Prefect, Postgres, vector stores, streaming basics."
     },
     {
-      "id": "s3",
-      "title": "AI engineering",
-      "meta": "Core",
-      "description": "RAG systems, agent loops, structured output, prompt + context engineering, latency and cost budgeting."
-    },
-    {
       "id": "s4",
       "title": "Production & delivery",
       "meta": "Working",
