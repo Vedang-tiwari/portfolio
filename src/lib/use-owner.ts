@@ -36,8 +36,8 @@ export function useOwner() {
       const current = readOwnerContent();
       const nextContent: OwnerContent = {
         ...current,
-        about: current.about !== null ? current.about : (remote.about ?? null),
-        socials: current.socials !== null ? current.socials : (remote.socials ?? null),
+        about: remote.about !== undefined ? remote.about : current.about,
+        socials: remote.socials !== undefined ? remote.socials : current.socials,
       };
       writeOwnerContent(nextContent);
       setContent(nextContent);

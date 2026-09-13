@@ -36,21 +36,11 @@ export function useCollection(section: SectionKey) {
       if (cancelled) return;
       if (remoteData && Array.isArray(remoteData[section])) {
         const key = storageKey(section);
-        const hasLocalStorage = typeof window !== "undefined" && window.localStorage.getItem(key) !== null;
-
-        if (!hasLocalStorage) {
-          // First time loading on this browser: initialize localStorage with server data
-          setItems(remoteData[section]);
-          try {
-            window.localStorage.setItem(key, JSON.stringify(remoteData[section]));
-          } catch {
-            /* ignore */
-          }
-        } else {
-          // Browser already has user state in localStorage.
-          // Keep localStorage as primary source so user edits/additions are preserved on refresh.
-          const currentLocal = readCollection(section);
-          setItems(currentLocal);
+        setItems(remoteData[section]);
+        try {
+          window.localStorage.setItem(key, JSON.stringify(remoteData[section]));
+        } catch {
+          /* ignore */
         }
       }
       setHydrated(true);
