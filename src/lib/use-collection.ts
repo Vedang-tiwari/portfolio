@@ -15,7 +15,7 @@ import {
  * Section content backed by data/portfolio.json (API sync across devices) + localStorage fallback.
  */
 export function useCollection(section: SectionKey) {
-  const [items, setItems] = useState<PortfolioItem[]>(DEFAULT_ITEMS[section]);
+  const [items, setItems] = useState<PortfolioItem[]>(() => readCollection(section));
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {

@@ -5,7 +5,8 @@ import { AboutText } from "@/components/AboutText";
 import { CvButton } from "@/components/CvButton";
 import { ConnectWithMe } from "@/components/ConnectWithMe";
 import { SectionSidebar } from "@/components/SectionSidebar";
-import { PROFILE, SECTIONS, SECTION_ORDER, DEFAULT_ITEMS } from "@/lib/portfolio";
+import { PROFILE, SECTIONS, SECTION_ORDER, type SectionKey } from "@/lib/portfolio";
+import { useCollection } from "@/lib/use-collection";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,6 +27,67 @@ export const Route = createFileRoute("/")({
   }),
   component: Home,
 });
+
+function HomeSection({ sectionKey }: { sectionKey: SectionKey }) {
+  const s = SECTIONS[sectionKey];
+  const { items } = useCollection(sectionKey);
+  const topItems = items.slice(0, 3);
+
+  return (
+    <section id={sectionKey} className="border-t border-border scroll-mt-24">
+      <div className="mx-auto max-w-6xl px-5 py-16">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div className="max-w-xl">
+            <h2 className="text-3xl font-bold sm:text-4xl">{s.title}</h2>
+            <p className="mt-3 text-muted-foreground">{s.blurb}</p>
+          </div>
+          <Link
+            to={s.path}
+            className="inline-flex items-center gap-1.5 rounded-sm border border-foreground px-4 py-2.5 text-sm font-medium transition-colors hover:bg-foreground hover:text-background"
+          >
+            Open {s.label} <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+          </Link>
+        </div>
+        <div className="mt-6 rule-flame w-16" />
+
+        {topItems.length === 0 ? (
+          <p className="mt-8 text-muted-foreground">
+            Nothing published here yet — check back soon.
+          </p>
+        ) : (
+          <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {topItems.map((item) => (
+              <li
+                key={item.id}
+                className="group flex flex-col border border-border bg-card p-5 transition-colors hover:border-foreground"
+              >
+                <p className="text-xs font-semibold uppercase tracking-[0.14em] text-flame-red">
+                  {item.meta}
+                </p>
+                <h3 className="mt-2 text-lg font-bold leading-snug">{item.title}</h3>
+                <p className="mt-2 flex-1 text-sm text-muted-foreground whitespace-pre-line">
+                  {item.description}
+                </p>
+                {item.url && (
+                  <div className="mt-4">
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="inline-flex items-center gap-1 text-sm font-medium underline decoration-flame-orange decoration-2 underline-offset-4"
+                    >
+                      Open <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                    </a>
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
+  );
+}
 
 function Home() {
   return (
@@ -71,49 +133,9 @@ function Home() {
         </div>
       </section>
 
-      {SECTION_ORDER.map((key) => {
-        const s = SECTIONS[key];
-        return (
-          <section
-            key={key}
-            id={key}
-            className="border-t border-border scroll-mt-24"
-          >
-            <div className="mx-auto max-w-6xl px-5 py-16">
-              <div className="flex flex-wrap items-end justify-between gap-4">
-                <div className="max-w-xl">
-                  <h2 className="text-3xl font-bold sm:text-4xl">{s.title}</h2>
-                  <p className="mt-3 text-muted-foreground">{s.blurb}</p>
-                </div>
-                <Link
-                  to={s.path}
-                  className="inline-flex items-center gap-1.5 rounded-sm border border-foreground px-4 py-2.5 text-sm font-medium transition-colors hover:bg-foreground hover:text-background"
-                >
-                  Open {s.label} <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-                </Link>
-              </div>
-              <div className="mt-6 rule-flame w-16" />
-              {/* PLACEHOLDER entries — from DEFAULT_ITEMS in src/lib/portfolio.ts */}
-              <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {DEFAULT_ITEMS[key].slice(0, 3).map((item) => (
-                  <li
-                    key={item.id}
-                    className="flex flex-col border border-border bg-card p-5"
-                  >
-                    <p className="text-xs font-semibold uppercase tracking-[0.14em] text-flame-red">
-                      {item.meta}
-                    </p>
-                    <h3 className="mt-2 text-lg font-bold leading-snug">{item.title}</h3>
-                    <p className="mt-2 flex-1 text-sm text-muted-foreground">
-                      {item.description}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-        );
-      })}
+      {SECTION_ORDER.map((key) => (
+        <HomeSection key={key} sectionKey={key} />
+      ))}
 
       <section className="border-t border-border scroll-mt-24">
         <div className="mx-auto max-w-6xl px-5 py-16">
