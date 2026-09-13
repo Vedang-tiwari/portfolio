@@ -2,6 +2,13 @@
   "projects": [
     {
       "id": "p1",
+      "title": "Neural Sequence Lab",
+      "meta": "Numpy  ·  Pandas  ·  Scikit-Learn  ·  Matplotlib  ·  Seaborn  ·  Tensorflow  ·  Streamlit  ·  Jupyter",
+      "description": "Neural Sequence Lab is a starter workspace for experimenting with sequence models, including RNN, LSTM, and GRU architectures.",
+      "url": "https://github.com/Vedang-tiwari/Neural-Sequence-Lab"
+    },
+    {
+      "id": "p2",
       "title": "Image caption generator",
       "meta": "TensorFlow / Keras  ·  NLTK  ·  Scikit-learn  ·  NumPy  ·  Matplotlib  ·  Seaborn",
       "description": "Image Captioning V1 is a complete, end-to-end Deep Learning and Computer Vision pipeline designed to automatically generate natural language descriptive captions for images. It combines pre-trained Convolutional Neural Networks (CNN) for visual feature extraction with Recurrent Neural Networks (LSTM) for sequence-based text decoding.\n\nThe project is trained on the popular Flickr8k dataset (~8,000 images, each annotated with 5 human captions) and provides a fully modular Python codebase for dataset processing, feature extraction, training, testing, inference, and BLEU metric evaluation.",
