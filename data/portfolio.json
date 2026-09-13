@@ -1,35 +1,14 @@
 {
   "projects": [
     {
+      "id": "p1",
       "title": "Image caption generator",
       "meta": "TensorFlow / Keras  ·  NLTK  ·  Scikit-learn  ·  NumPy  ·  Matplotlib  ·  Seaborn",
       "description": "Image Captioning V1 is a complete, end-to-end Deep Learning and Computer Vision pipeline designed to automatically generate natural language descriptive captions for images. It combines pre-trained Convolutional Neural Networks (CNN) for visual feature extraction with Recurrent Neural Networks (LSTM) for sequence-based text decoding.\n\nThe project is trained on the popular Flickr8k dataset (~8,000 images, each annotated with 5 human captions) and provides a fully modular Python codebase for dataset processing, feature extraction, training, testing, inference, and BLEU metric evaluation.",
-      "url": "https://github.com/Vedang-tiwari/image-captioning/tree/f51749d919b210cfdb6ac0d0bbd46561687fcdc5/image-captioning",
-      "id": "mta7e2e9-5r5y2"
-    },
-    {
-      "id": "p1",
-      "title": "Retrieval agent for lecture archives",
-      "meta": "Python · FastAPI · pgvector · LangGraph",
-      "description": "Hybrid BM25 + dense retrieval over 400 hours of transcribed lectures, with a tool-using agent loop and an eval harness scoring groundedness.",
-      "url": "https://github.com/"
+      "url": "https://github.com/Vedang-tiwari/image-captioning",
     },
     {
       "id": "p2",
-      "title": "On-device defect classifier",
-      "meta": "PyTorch · ONNX · Quantisation",
-      "description": "Fine-tuned vision backbone distilled to 4MB and quantised to int8 for edge inference at 30 FPS on a Raspberry Pi.",
-      "url": "https://github.com/"
-    },
-    {
-      "id": "p3",
-      "title": "Forecasting pipeline for demand data",
-      "meta": "Polars · Prefect · LightGBM",
-      "description": "Feature store plus backtesting framework with walk-forward validation; beat the seasonal-naive baseline by 18% MAPE.",
-      "url": "https://github.com/"
-    },
-    {
-      "id": "p4",
       "title": "Multiplicative Attention",
       "meta": "Python · PyTorch · TorchText · TQDM · SacreBLEU · TensorBoard",
       "description": "Multiplicative attention (also called dot-product attention) is an attention mechanism that computes the alignment score between a query and a key using a simple dot product (or matrix multiplication).",
@@ -91,11 +70,11 @@
   ],
   "certificates": [
     {
+      "id": "c0",
       "title": "ai ml",
       "meta": "oracle",
-      "description": "good good day",
-      "url": "https://youtube.com",
-      "id": "msxdrnnm-uz5pj"
+      "description": "A good good day",
+      "url": "https://youtube.com"
     },
     {
       "id": "c1",
@@ -153,8 +132,8 @@
     },
     {
       "label": "Instagram",
-      "handle": "@iblamevedang",
-      "href": "https://www.instagram.com/iblamevedang/"
+      "handle": "@letslearnmany",
+      "href": "https://www.instagram.com/letslearnmany/"
     },
     {
       "label": "Gmail",
