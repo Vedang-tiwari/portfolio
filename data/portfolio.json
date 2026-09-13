@@ -15,7 +15,7 @@
       "url": "https://github.com/Vedang-tiwari/image-captioning"
     },
     {
-      "id": "p2",
+      "id": "p3",
       "title": "Multiplicative Attention",
       "meta": "Python · PyTorch · TorchText · TQDM · SacreBLEU · TensorBoard",
       "description": "Multiplicative attention (also called dot-product attention) is an attention mechanism that computes the alignment score between a query and a key using a simple dot product (or matrix multiplication).",
