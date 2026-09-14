@@ -64,6 +64,13 @@
   ],
   "certificates": [
     {
+      "title": "Foundations of Prompt Engineering",
+      "meta": "Amazon",
+      "description": "Foundations of Prompt Engineering covers the core principles, practices, and techniques required to structure input text to guide generative AI models effectively.\nIn this course I learnt about \nPrompt Anatomy, Zero shot, Few shot prompting techinques, and some advanced and reasoning patterns which are Chain-of-Thought(CoT) and advanced Frameworks techniques like Tree of Thoughts, ReAct (Reasoning + Acting), and Retrieval-Augmented Generation (RAG)., Parameter Tuning and the last but not the least Safety and Security",
+      "url": "blob:https://skillbuilder.aws/03be90b5-5121-4a56-b8f4-0abfe1a6435a",
+      "id": "mu1epfb6-g2ikn"
+    },
+    {
       "id": "c1",
       "title": "Deep Learning Specialization",
       "meta": "DeepLearning.AI",
