@@ -44,11 +44,12 @@ export function CollectionSection({ section }: { section: SectionKey }) {
                       e.preventDefault();
                       try {
                         const dataUrl = item.attachment!.dataUrl;
-                        const arr = dataUrl.split(',');
-                        const mimeMatch = arr[0].match(/:(.*?);/);
+                        const [header, base64Data] = dataUrl.split(',');
+                        if (!header || !base64Data) return;
+                        const mimeMatch = header.match(/:(.*?);/);
                         if (!mimeMatch) return;
-                        const mime = mimeMatch[1];
-                        const bstr = atob(arr[1]);
+                        const mime = mimeMatch[1] as string;
+                        const bstr = atob(base64Data);
                         let n = bstr.length;
                         const u8arr = new Uint8Array(n);
                         while (n--) {
