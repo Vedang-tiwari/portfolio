@@ -64,13 +64,6 @@
   ],
   "certificates": [
     {
-      "id": "c0",
-      "title": "ai ml",
-      "meta": "oracle",
-      "description": "A good good day",
-      "url": "https://youtube.com"
-    },
-    {
       "id": "c1",
       "title": "Deep Learning Specialization",
       "meta": "DeepLearning.AI",
