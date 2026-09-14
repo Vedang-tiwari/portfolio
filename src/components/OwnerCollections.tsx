@@ -1,8 +1,9 @@
-import { Plus, Trash2, X } from "lucide-react";
-import { useState } from "react";
+import { Plus, Trash2, X, FileUp } from "lucide-react";
+import { useState, useRef } from "react";
 import { SECTION_ORDER, SECTIONS, type SectionKey } from "@/lib/portfolio";
 import { useCollection } from "@/lib/use-collection";
 import { ConfirmDelete } from "@/components/ConfirmDelete";
+import { fileToStored, formatBytes } from "@/lib/owner";
 
 
 /**
@@ -34,6 +35,8 @@ function SectionManager({ section }: { section: SectionKey }) {
   const [itemMeta, setItemMeta] = useState("");
   const [description, setDescription] = useState("");
   const [url, setUrl] = useState("");
+  const [attachment, setAttachment] = useState<{name: string; dataUrl: string; size: number} | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   /** item id to delete, "reset" for restore-defaults, null when idle */
   const [pending, setPending] = useState<string | null>(null);
 
@@ -46,11 +49,13 @@ function SectionManager({ section }: { section: SectionKey }) {
       meta: itemMeta.trim() || meta.metaLabel,
       description: description.trim(),
       ...(url.trim() ? { url: url.trim() } : {}),
+      ...(attachment ? { attachment } : {}),
     });
     setTitle("");
     setItemMeta("");
     setDescription("");
     setUrl("");
+    setAttachment(null);
     setFormOpen(false);
   }
 
@@ -118,17 +123,79 @@ function SectionManager({ section }: { section: SectionKey }) {
               className="mt-1.5 w-full rounded-sm border border-input bg-background px-3 py-2 outline-none focus-visible:border-flame-orange"
             />
           </label>
-          <label className="text-sm sm:col-span-2">
-            <span className="font-medium">Link (optional)</span>
-            <input
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              type="url"
-              placeholder="https://"
-              maxLength={300}
-              className="mt-1.5 w-full rounded-sm border border-input bg-background px-3 py-2 outline-none focus-visible:border-flame-orange"
-            />
-          </label>
+          {section === "certificates" ? (
+            <div className="sm:col-span-2 border border-border p-3 space-y-3">
+              <span className="text-sm font-medium">Link or Attachment (Optional)</span>
+              {attachment ? (
+                <div className="flex items-center justify-between border border-border bg-muted/50 px-3 py-2">
+                  <span className="text-sm min-w-0 flex-1 truncate">
+                    <span className="font-mono">{attachment.name}</span> ({formatBytes(attachment.size)})
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setAttachment(null)}
+                    className="ml-2 text-destructive hover:underline text-sm"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <input
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                    type="url"
+                    placeholder="https://"
+                    maxLength={300}
+                    className="flex-1 rounded-sm border border-input bg-background px-3 py-2 outline-none focus-visible:border-flame-orange text-sm"
+                  />
+                  <span className="text-xs text-muted-foreground font-medium uppercase">Or</span>
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="inline-flex items-center gap-1.5 rounded-sm border border-foreground bg-foreground px-3 py-2 text-sm font-medium text-background transition-transform hover:-translate-y-0.5 whitespace-nowrap"
+                  >
+                    <FileUp className="h-4 w-4" aria-hidden="true" />
+                    Attach File
+                  </button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".pdf,.png,.jpg,.jpeg"
+                    className="hidden"
+                    onChange={async (e) => {
+                      const picked = e.target.files?.[0];
+                      e.target.value = "";
+                      if (!picked) return;
+                      if (picked.size > 2 * 1024 * 1024) {
+                        alert(`File is too large (${formatBytes(picked.size)}). Max is 2MB.`);
+                        return;
+                      }
+                      try {
+                        const stored = await fileToStored(picked);
+                        setAttachment({ name: stored.name, dataUrl: stored.dataUrl, size: stored.size });
+                        setUrl("");
+                      } catch (err) {
+                        alert("Upload failed.");
+                      }
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          ) : (
+            <label className="text-sm sm:col-span-2">
+              <span className="font-medium">Link (optional)</span>
+              <input
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                type="url"
+                placeholder="https://"
+                maxLength={300}
+                className="mt-1.5 w-full rounded-sm border border-input bg-background px-3 py-2 outline-none focus-visible:border-flame-orange"
+              />
+            </label>
+          )}
           <div className="sm:col-span-2">
             <button
               type="submit"

@@ -22,6 +22,12 @@ export interface PortfolioItem {
   description: string;
   /** Optional external link (repo, article, credential). */
   url?: string;
+  /** Optional attached file (e.g. for certificates). */
+  attachment?: {
+    name: string;
+    dataUrl: string;
+    size: number;
+  };
 }
 
 export interface SocialLink {

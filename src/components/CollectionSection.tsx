@@ -37,7 +37,15 @@ export function CollectionSection({ section }: { section: SectionKey }) {
               <h2 className="mt-2 text-lg font-bold leading-snug">{item.title}</h2>
               <p className="mt-2 flex-1 text-sm text-muted-foreground">{item.description}</p>
               <div className="mt-4">
-                {item.url ? (
+                {item.attachment ? (
+                  <a
+                    href={item.attachment.dataUrl}
+                    download={item.attachment.name}
+                    className="inline-flex items-center gap-1 text-sm font-medium underline decoration-flame-orange decoration-2 underline-offset-4"
+                  >
+                    Download <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                  </a>
+                ) : item.url ? (
                   <a
                     href={item.url}
                     target="_blank"
@@ -47,7 +55,7 @@ export function CollectionSection({ section }: { section: SectionKey }) {
                     Open <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
                   </a>
                 ) : (
-                  <span className="text-xs text-muted-foreground">No link</span>
+                  <span className="text-xs text-muted-foreground">No link or attachment</span>
                 )}
               </div>
             </li>
