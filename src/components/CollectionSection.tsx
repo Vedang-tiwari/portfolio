@@ -38,13 +38,33 @@ export function CollectionSection({ section }: { section: SectionKey }) {
               <p className="mt-2 flex-1 text-sm text-muted-foreground">{item.description}</p>
               <div className="mt-4">
                 {item.attachment ? (
-                  <a
-                    href={item.attachment.dataUrl}
-                    download={item.attachment.name}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      try {
+                        const dataUrl = item.attachment!.dataUrl;
+                        const arr = dataUrl.split(',');
+                        const mimeMatch = arr[0].match(/:(.*?);/);
+                        if (!mimeMatch) return;
+                        const mime = mimeMatch[1];
+                        const bstr = atob(arr[1]);
+                        let n = bstr.length;
+                        const u8arr = new Uint8Array(n);
+                        while (n--) {
+                          u8arr[n] = bstr.charCodeAt(n);
+                        }
+                        const blob = new Blob([u8arr], { type: mime });
+                        const url = URL.createObjectURL(blob);
+                        window.open(url, '_blank');
+                      } catch (err) {
+                        console.error("Failed to preview attachment", err);
+                      }
+                    }}
                     className="inline-flex items-center gap-1 text-sm font-medium underline decoration-flame-orange decoration-2 underline-offset-4"
                   >
-                    Download <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-                  </a>
+                    Preview <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+                  </button>
                 ) : item.url ? (
                   <a
                     href={item.url}
