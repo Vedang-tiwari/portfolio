@@ -64,6 +64,13 @@
   ],
   "certificates": [
     {
+      "title": "Problem Solving",
+      "meta": "HackerRank",
+      "description": "Validates core algorithmic thinking, fundamental data structures, and the ability to convert logical problems into clean, efficient code.\n\nKey Competencies Demonstrated\n\nData Structures: Arrays, Matrix Traversal, String Manipulation, and Hash Maps.\n\nCore Algorithms: Linear & Binary Search, Basic Sorting (Insertion/Counting Sort), and Two-Pointer logic.\n\nProblem-Solving & Logic: Edge-case handling, mathematical reasoning (modulo, prime checks, min/max evaluation), and basic Greedy techniques.\n\nCode Efficiency: Optimizing time and space complexity to handle large inputs within constraints.",
+      "url": "https://www.hackerrank.com/certificates/c57269b3598a",
+      "id": "mu6ewyeg-migwo"
+    },
+    {
       "title": "Foundations of Prompt Engineering",
       "meta": "Amazon",
       "description": "Foundations of Prompt Engineering covers the core principles, practices, and techniques required to structure input text to guide generative AI models effectively. In this course I learnt about Prompt Anatomy, Zero shot, Few shot prompting techinques, and some advanced and reasoning patterns which are Chain-of-Thought(CoT) and advanced Frameworks techniques like Tree of Thoughts, ReAct (Reasoning + Acting), and Retrieval-Augmented Generation (RAG)., Parameter Tuning and the last but not the least Safety and Security",
