@@ -64,6 +64,13 @@
   ],
   "certificates": [
     {
+      "title": "Python(basics)",
+      "meta": "HackerRank",
+      "description": "Validates fundamental Python programming concepts, idiomatic code writing, and the ability to solve practical logic problems using native language constructs and standard data structures.\n\nKey Competencies Demonstrated\n· Data Structures & Collections: Working with lists, dictionaries, sets, tuples, and nested collection operations.\n· Control Flow & Logic: Implementing conditional branching (if-else), for/while loops, iterators, and loop controls (break/continue).\n· Pythonic Paradigms: Writing clean code using list comprehensions, string manipulation, lambda functions, and modular design.",
+      "url": "https://www.hackerrank.com/certificates/3097d50d6563",
+      "id": "mu6f4uk2-knsj5"
+    },
+    {
       "title": "Problem Solving",
       "meta": "HackerRank",
       "description": "Validates core algorithmic thinking, fundamental data structures, and the ability to convert logical problems into clean, efficient code.\n\nKey Competencies Demonstrated\n\nData Structures: Arrays, Matrix Traversal, String Manipulation, and Hash Maps.\n\nCore Algorithms: Linear & Binary Search, Basic Sorting (Insertion/Counting Sort), and Two-Pointer logic.\n\nProblem-Solving & Logic: Edge-case handling, mathematical reasoning (modulo, prime checks, min/max evaluation), and basic Greedy techniques.\n\nCode Efficiency: Optimizing time and space complexity to handle large inputs within constraints.",
