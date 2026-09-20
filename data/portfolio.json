@@ -101,13 +101,6 @@
       "meta": "DeepLearning.AI",
       "description": "Five-course sequence covering CNNs, sequence models and tuning.",
       "url": "https://coursera.org/"
-    },
-    {
-      "id": "c2",
-      "title": "Machine Learning Engineering for Production",
-      "meta": "DeepLearning.AI",
-      "description": "MLOps lifecycle, data-centric AI, deployment and monitoring.",
-      "url": "https://coursera.org/"
     }
   ],
   "notes": [
