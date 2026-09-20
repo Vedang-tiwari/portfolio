@@ -108,13 +108,6 @@
       "meta": "DeepLearning.AI",
       "description": "MLOps lifecycle, data-centric AI, deployment and monitoring.",
       "url": "https://coursera.org/"
-    },
-    {
-      "id": "c3",
-      "title": "Cloud Practitioner",
-      "meta": "AWS",
-      "description": "Core cloud services, pricing models and shared-responsibility security.",
-      "url": "https://aws.amazon.com/"
     }
   ],
   "notes": [
