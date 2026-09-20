@@ -64,6 +64,13 @@
   ],
   "certificates": [
     {
+      "title": "AI Foundations",
+      "meta": "OpenAI",
+      "description": "Fundamental Artificial Intelligence competencies and practical prompt engineering techniques for real-world applications.",
+      "url": "https://academy.openai.com/public/certificate/rui4tuks8u",
+      "id": "mu9io0oc-u4qli"
+    },
+    {
       "title": "Python(basics)",
       "meta": "HackerRank",
       "description": "Validates fundamental Python programming concepts, idiomatic code writing, and the ability to solve practical logic problems using native language constructs and standard data structures.\n\nKey Competencies Demonstrated\n· Data Structures & Collections: Working with lists, dictionaries, sets, tuples, and nested collection operations.\n· Control Flow & Logic: Implementing conditional branching (if-else), for/while loops, iterators, and loop controls (break/continue).\n· Pythonic Paradigms: Writing clean code using list comprehensions, string manipulation, lambda functions, and modular design.",
