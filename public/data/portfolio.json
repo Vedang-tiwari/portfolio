@@ -64,6 +64,13 @@
   ],
   "certificates": [
     {
+      "title": "MCP Model Context Protocol",
+      "meta": "Free Academy.ai",
+      "description": "The Model Context Protocol is a framework that standardizes how AI applications connect to external data sources, tools, and services—enabling AI models like Claude to securely access and interact with real-world information and systems.",
+      "url": "https://freeacademy.ai/verify/FA-2026-MMCP-QGK0D0?utm_source=copy_link&utm_medium=share&utm_campaign=certificate_share",
+      "id": "mv6hhw3l-ud9b9"
+    },
+    {
       "title": "AI Foundations",
       "meta": "OpenAI",
       "description": "Fundamental Artificial Intelligence competencies and practical prompt engineering techniques for real-world applications.",
